@@ -1,6 +1,6 @@
-# barcode_reader_ml
+# pose_game_ml
 
-Barcode Reader with Firebase ML
+Pose Game with Firebase ML
 
 ## Getting Started
 
