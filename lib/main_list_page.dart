@@ -1,5 +1,8 @@
 import 'package:barcode_reader_ml/create_pose_page.dart';
 import 'package:barcode_reader_ml/main.dart';
+import 'package:barcode_reader_ml/pose_painter.dart';
+import 'package:barcode_reader_ml/pose_painter_engine.dart';
+import 'package:barcode_reader_ml/pose_viewmodel.dart';
 import 'package:barcode_reader_ml/scan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +15,7 @@ class MainListPage extends ConsumerWidget {
 
   @override
   Widget build(context, watch) {
-    final poses = watch(barcodeViewModelProvider);
+    final poses = watch(poseViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Poses"),
@@ -31,10 +34,8 @@ class MainListPage extends ConsumerWidget {
                       builder: (_) => ScanPage(data: poses[index])));
                 },
                 child: CustomPaint(
-                  painter: PosePainter(StaticPosePainterEngine(
-                      poses[index].poses,
-                      poses[index].absoluteImageSize,
-                      poses[index].rotation)),
+                  painter: PosePainter(
+                      StaticPosePainterEngine.fromRaw(poses[index])),
                 ),
               ),
             ),
@@ -62,7 +63,7 @@ class MainListPage extends ConsumerWidget {
                             builder: (_) => const CreatePosePage()));
                     if (res is RawPoseData) {
                       await context
-                          .read(barcodeViewModelProvider.notifier)
+                          .read(poseViewModelProvider.notifier)
                           .addImage(res);
                       Navigator.pop(context);
                     }

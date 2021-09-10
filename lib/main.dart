@@ -5,7 +5,7 @@ import 'package:flutter_fast_ui_white/flutter_fast_ui_white.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-final barcodeViewModelProvider =
+final poseViewModelProvider =
     StateNotifierProvider<PoseViewModel, List<PoseData>>((_) {
   return PoseViewModel();
 });

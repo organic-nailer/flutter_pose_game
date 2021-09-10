@@ -1,4 +1,3 @@
-import 'package:barcode_reader_ml/create_pose_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -36,4 +35,12 @@ class PoseData {
   final DateTime createdAt;
   const PoseData(this.id, this.poses, this.absoluteImageSize, this.rotation,
       this.createdAt);
+}
+
+@immutable
+class RawPoseData {
+  final List<Pose> poses;
+  final Size absoluteImageSize;
+  final InputImageRotation rotation;
+  const RawPoseData(this.poses, this.absoluteImageSize, this.rotation);
 }

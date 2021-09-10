@@ -1,5 +1,7 @@
 import 'package:barcode_reader_ml/camera_view.dart';
-import 'package:barcode_reader_ml/scan_page.dart';
+import 'package:barcode_reader_ml/pose_painter.dart';
+import 'package:barcode_reader_ml/pose_painter_engine.dart';
+import 'package:barcode_reader_ml/pose_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
@@ -75,12 +77,4 @@ class _CreatePosePageState extends State<CreatePosePage> {
     isBusy = false;
     return res;
   }
-}
-
-@immutable
-class RawPoseData {
-  final List<Pose> poses;
-  final Size absoluteImageSize;
-  final InputImageRotation rotation;
-  const RawPoseData(this.poses, this.absoluteImageSize, this.rotation);
 }
