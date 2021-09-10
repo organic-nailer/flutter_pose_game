@@ -1,3 +1,4 @@
+import 'package:barcode_reader_ml/create_pose_page.dart';
 import 'package:barcode_reader_ml/main.dart';
 import 'package:barcode_reader_ml/scan_page.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +13,31 @@ class MainListPage extends ConsumerWidget {
   @override
   Widget build(context, watch) {
     final viewModel = watch(barcodeViewModelProvider.notifier);
-    final barcodes = watch(barcodeViewModelProvider);
+    final poses = watch(barcodeViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Barcode Memo"),
+        title: Text("Poses"),
       ),
-      body: ListView.builder(
-        itemCount: barcodes.length,
+      body: GridView.builder(
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: poses.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(barcodes[index].value),
-            subtitle: Text(formatter.format(barcodes[index].createdAt)),
-            trailing: IconButton(
-              icon: Icon(Icons.delete_outline),
-              color: Colors.red,
-              onPressed: () {
-                viewModel.onRemoveClicked(barcodes[index]);
-              },
+          return AspectRatio(
+            aspectRatio: 1,
+            child: Card(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => ScanPage(data: poses[index])));
+                },
+                child: CustomPaint(
+                  painter: PosePainter(StaticPosePainterEngine(
+                      poses[index].poses,
+                      poses[index].absoluteImageSize,
+                      poses[index].rotation)),
+                ),
+              ),
             ),
           );
         },
@@ -49,12 +58,12 @@ class MainListPage extends ConsumerWidget {
               children: [
                 SimpleDialogOption(
                   onPressed: () async {
-                    final res = await Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => ScanPage()));
-                    if (res is String) {
+                    final res = await Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => CreatePosePage()));
+                    if (res is RawPoseData) {
                       await context
                           .read(barcodeViewModelProvider.notifier)
-                          .addBarcode(res);
+                          .addImage(res);
                       Navigator.pop(context);
                     }
                   },
