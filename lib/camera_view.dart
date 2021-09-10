@@ -30,17 +30,15 @@ class _CameraViewState extends State<CameraView> {
         if (snapshot.hasError) {
           return Container(
             color: Colors.red.shade200,
-            child: Center(child: Text("${snapshot.error.toString()}")),
+            child: Center(child: Text(snapshot.error.toString())),
           );
         }
         if (snapshot.hasData) {
           final controller = snapshot.requireData;
           return CameraPreview(controller);
         }
-        return Container(
-          child: Center(
-            child: Text("Loading..."),
-          ),
+        return const Center(
+          child: Text("Loading..."),
         );
       },
     );

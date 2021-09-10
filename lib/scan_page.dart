@@ -32,7 +32,7 @@ class _ScanPageState extends State<ScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Scan"),
+        title: const Text("Scan"),
       ),
       body: Stack(
         children: [
@@ -52,7 +52,7 @@ class _ScanPageState extends State<ScanPage> {
             left: 8,
             child: Card(
               color: Colors.white,
-              child: Container(
+              child: SizedBox(
                 width: 100,
                 height: 200,
                 child: CustomPaint(
@@ -74,8 +74,8 @@ class _ScanPageState extends State<ScanPage> {
               padding: const EdgeInsets.all(8.0),
               child: Consumer(builder: (context, watch, child) {
                 return Text(
-                  "${watch(similarityProvider).state.toStringAsFixed(4)}",
-                  style: TextStyle(
+                  watch(similarityProvider).state.toStringAsFixed(4),
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                       color: Colors.red),
@@ -115,15 +115,21 @@ abstract class IPosePainterEngine extends ChangeNotifier {
 }
 
 class StaticPosePainterEngine extends IPosePainterEngine {
+  @override
   final List<Pose> poses;
+  @override
   final Size absoluteImageSize;
+  @override
   final InputImageRotation rotation;
   StaticPosePainterEngine(this.poses, this.absoluteImageSize, this.rotation);
 }
 
 class PosePainterEngine extends IPosePainterEngine {
+  @override
   List<Pose> poses = [];
+  @override
   Size? absoluteImageSize;
+  @override
   InputImageRotation? rotation;
   PoseDetector poseDetector = GoogleMlKit.vision.poseDetector();
   PosePainterEngine();
@@ -134,14 +140,13 @@ class PosePainterEngine extends IPosePainterEngine {
 
   Future<RawPoseData?> update(InputImage image) async {
     final poses = await poseDetector.processImage(image);
-    print('Found ${poses.length} poses');
     if (image.inputImageData?.size != null &&
         image.inputImageData?.imageRotation != null) {
       this.poses = poses;
-      this.absoluteImageSize = image.inputImageData!.size;
-      this.rotation = image.inputImageData!.imageRotation;
+      absoluteImageSize = image.inputImageData!.size;
+      rotation = image.inputImageData!.imageRotation;
       notifyListeners();
-      return RawPoseData(this.poses, this.absoluteImageSize!, this.rotation!);
+      return RawPoseData(this.poses, absoluteImageSize!, rotation!);
     }
     return null;
   }
@@ -172,7 +177,7 @@ class PosePainter extends CustomPainter {
     final absoluteImageSize = engine.absoluteImageSize;
     if (rotation == null || absoluteImageSize == null) return;
 
-    engine.poses.forEach((pose) {
+    for (var pose in engine.poses) {
       pose.landmarks.forEach((_, landmark) {
         canvas.drawCircle(
             Offset(
@@ -219,7 +224,7 @@ class PosePainter extends CustomPainter {
           PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee, rightPaint);
       paintLine(
           PoseLandmarkType.rightKnee, PoseLandmarkType.rightAnkle, rightPaint);
-    });
+    }
   }
 
   @override

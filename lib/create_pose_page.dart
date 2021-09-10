@@ -33,7 +33,7 @@ class _CreatePosePageState extends State<CreatePosePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Scan"),
+        title: const Text("Scan"),
       ),
       body: Stack(
         children: [
@@ -58,7 +58,7 @@ class _CreatePosePageState extends State<CreatePosePage> {
         onPressed: () {
           shutterFlag = true;
         },
-        child: Icon(Icons.camera),
+        child: const Icon(Icons.camera),
       ),
     );
   }

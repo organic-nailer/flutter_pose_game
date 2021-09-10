@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 import 'package:google_ml_kit/google_ml_kit.dart';
 
@@ -19,11 +19,10 @@ class PoseCompare {
   ];
 
   static List<List<double>>? transform(Pose pose) {
-    print("transform: $pose");
     final basePoint = pose.landmarks[PoseLandmarkType.rightShoulder];
     if (basePoint == null) return null;
     final res = <List<double>>[];
-    usingLandmarks.forEach((type) {
+    for (var type in usingLandmarks) {
       if (!pose.landmarks.containsKey(type)) return null;
       final landmark = pose.landmarks[type]!;
       res.add([
@@ -31,7 +30,7 @@ class PoseCompare {
         basePoint.y - landmark.y,
         basePoint.z - landmark.z
       ]);
-    });
+    }
     return res;
   }
 
@@ -54,6 +53,6 @@ class PoseCompare {
       squareA += a[i] * a[i];
       squareB += b[i] * b[i];
     }
-    return inner / (Math.sqrt(squareA) * Math.sqrt(squareB));
+    return inner / (math.sqrt(squareA) * math.sqrt(squareB));
   }
 }

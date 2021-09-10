@@ -12,15 +12,14 @@ class MainListPage extends ConsumerWidget {
 
   @override
   Widget build(context, watch) {
-    final viewModel = watch(barcodeViewModelProvider.notifier);
     final poses = watch(barcodeViewModelProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Poses"),
+        title: const Text("Poses"),
       ),
       body: GridView.builder(
         gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemCount: poses.length,
         itemBuilder: (context, index) {
           return AspectRatio(
@@ -43,7 +42,7 @@ class MainListPage extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           showPhotoDialog(context);
         },
@@ -59,7 +58,8 @@ class MainListPage extends ConsumerWidget {
                 SimpleDialogOption(
                   onPressed: () async {
                     final res = await Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => CreatePosePage()));
+                        MaterialPageRoute(
+                            builder: (_) => const CreatePosePage()));
                     if (res is RawPoseData) {
                       await context
                           .read(barcodeViewModelProvider.notifier)
@@ -67,7 +67,7 @@ class MainListPage extends ConsumerWidget {
                       Navigator.pop(context);
                     }
                   },
-                  child: ListTile(
+                  child: const ListTile(
                     title: Text("写真を撮る"),
                     trailing: Icon(Icons.photo_camera),
                   ),
